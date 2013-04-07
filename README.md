@@ -6,7 +6,7 @@ Media queries are fundamental feature of CSS for building reponsive websites. Bu
 
 Download and include `jels-v.01.js` in your project.
 
-On your page target any number of element -- this can be a class, ID, or any other valid selector -- like this:
+On your page target any number of elements -- this can be a class, ID, or any other valid selector -- like this:
 
     $(".foo").jels("300, 400, 500");
     $("#cat").jels("200, 550");
@@ -63,3 +63,7 @@ This means you can supply custom CSS depending on the width of the element.
 - In this case `.foo` will be red its width is 500px or greater.
 - If less than or equal to 350px its background will be green.
 - If its width is between 351px and 500px the background will be blue.
+
+## Demo
+
+Download or clone this repond and try out the [demo](https://github.com/tomgenoni/jels/blob/master/demo/index.html) to see an example in action.
