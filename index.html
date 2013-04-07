@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Jels</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+
+    <script>
+    $(document).ready(function(){
+
+        (function( $ ) {
+            $.fn.jels = function(breaks) {
+
+                function removeClassByPrefix(el, prefix) {
+                    console.log(el);
+                    var regx = new RegExp('\b' + prefix + '.*?\b', 'g');
+                    el.selector = el.selector.replace(regx, '');
+                    return el;
+                }
+
+                var target = $(this);
+
+                function doSize(target,breaksArr) {
+                    $(window).resize(function() {
+                        var targetWidth = $(target).outerWidth();
+                        $(".foo").html(targetWidth)
+                        $.each(breaksArr, function(i, v) {
+                            if (targetWidth <= v ) {
+                                $(target).removeClass (function (index, css) {
+                                    return (css.match (/\bjels-\S+/g) || []).join(' ');
+                                }).addClass("jels-"+v)
+                                return false;
+                            } else {
+                                removeClassByPrefix(target,"jels-")
+                            }
+                        });
+                   })
+                }
+
+                if (breaks != null) {
+                    var breaks = breaks.replace(/\s/g, "");
+                    breaksArr = (breaks.split(","));
+                    doSize(target,breaksArr)
+                } else {
+                    console.log("jels did not receive any breakpoints.");
+                }
+            };
+        })( jQuery );
+
+      $(".foo").jels("600, 700, 800");
+      $(".bar").jels("400, 500, 600");
+
+  })
+    </script>
+
+    <style>
+        .foo.jels-600 {
+            background: red;
+        }
+        .foo.jels-700 {
+            background: green;
+        }
+        .foo.jels-800 {
+            background: blue;
+        }
+
+        .bar.jels-400 {
+            background: red;
+        }
+        .bar.jels-500 {
+            background: green;
+        }
+        .bar.jels-600 {
+            background: blue;
+        }
+
+        .foo {
+            width: 70%;
+        }
+    </style>
+
+
+</head>
+<body>
+
+    <div class="foo">
+       foo
+   </div>
+
+    <div class="bar">
+       foo
+   </div>
+
+
+</body>
+</html>
