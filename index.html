@@ -8,47 +8,63 @@
     <script>
     $(document).ready(function(){
 
+        // Jels: jQuery Element Sizer
+        // Adds class when element width is less than matching breakpoints.
+
         (function( $ ) {
             $.fn.jels = function(breaks) {
 
-                function removeClassByPrefix(el, prefix) {
-                    console.log(el);
-                    var regx = new RegExp('\b' + prefix + '.*?\b', 'g');
-                    el.selector = el.selector.replace(regx, '');
-                    return el;
-                }
-
+                // Target element we'll be testing the width of.
                 var target = $(this);
 
-                function doSize(target,breaksArr) {
-                    $(window).resize(function() {
-                        var targetWidth = $(target).outerWidth();
-                        $(".foo").html(targetWidth)
-                        $.each(breaksArr, function(i, v) {
-                            if (targetWidth <= v ) {
-                                $(target).removeClass (function (index, css) {
-                                    return (css.match (/\bjels-\S+/g) || []).join(' ');
-                                }).addClass("jels-"+v)
-                                return false;
-                            } else {
-                                removeClassByPrefix(target,"jels-")
-                            }
-                        });
-                   })
+                // Clean up breakpoints if they exists, otherwise ask for them.
+                function breaksExist(breaks) {
+                    if (breaks != null) {
+                        var breaks = breaks.replace(/\s/g, "");
+                        breaksArr = (breaks.split(","));
+                        init(target,breaksArr)
+                    } else {
+                        console.log("The jels function requires a string of comma-delmited breakpoints.");
+                    }
                 }
 
-                if (breaks != null) {
-                    var breaks = breaks.replace(/\s/g, "");
-                    breaksArr = (breaks.split(","));
-                    doSize(target,breaksArr)
-                } else {
-                    console.log("jels did not receive any breakpoints.");
+                // Run size test on load as well as on window resize.
+                function init(target,breaksArr) {
+                    doSize(target,breaksArr);
+                    $(window).resize(function() {
+                        doSize(target,breaksArr);
+                    })
                 }
+
+                // Removes the "jels-" class if a new match exists.
+                function removePrefixClass(target) {
+                    $(target).removeClass (function (index, css) {
+                        return (css.match (/\bjels-\S+/g) || []).join(' ');
+                    })
+                }
+
+                function doSize(target,breaksArr) {
+                    var targetWidth = $(target).outerWidth();
+                    $(".foo").html(targetWidth)
+                    $.each(breaksArr, function(i, v) {
+                        if (targetWidth <= v ) {
+                            removePrefixClass(target)
+                            $(target).addClass("jels-"+v)
+                            return false;
+                        } else {
+                            removePrefixClass(target)
+                        }
+                    });
+                }
+
+                // First test is for the presence of breakpoints.
+                breaksExist(breaks);
             };
         })( jQuery );
 
-      $(".foo").jels("600, 700, 800");
+      $(".foo").jels("600,700,800");
       $(".bar").jels("400, 500, 600");
+      $("#cat").jels("400, 500, 600");
 
   })
     </script>
@@ -74,6 +90,16 @@
             background: blue;
         }
 
+        #cat.jels-400 {
+            background: red;
+        }
+        #cat.jels-500 {
+            background: green;
+        }
+        #cat.jels-600 {
+            background: blue;
+        }
+
         .foo {
             width: 70%;
         }
@@ -88,7 +114,11 @@
    </div>
 
     <div class="bar">
-       foo
+       bar
+   </div>
+
+    <div id="cat">
+       cat
    </div>
 
 
