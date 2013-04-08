@@ -1,12 +1,14 @@
-# jels: jQuery Element Size
+# Jels: Media Queries for Elements
 
-Media queries are fundamental feature of CSS for building reponsive websites. But as powerful as they are they are limited to measuring the window width and somtimes that's not enough. Somtimes you want to measure and respond to the width of a specific element. This plug in will allow you to do that.
+Jels -- jQuery Element Size -- is a plug-in that injects classes to elements based on breakpoints. This allows for responsive design based not just on the width of the screen but the size of indivdual elements.
+
+Specifically, Jels measures the width an element and if its width is **less than** any of the supplied breakpoints it will add that value as a class, prefixed with `jels-`.
 
 ## Installation
 
 Download and include `jels-v.01.js` in your project.
 
-On your page target any number of elements -- this can be a class, ID, or any other valid selector -- like this:
+On your page target any number of elements by class, ID, or any other valid selector.
 
     $(".foo").jels("300, 400, 500");
     $("#cat").jels("200, 550");
@@ -20,7 +22,7 @@ A complete example:
         <meta charset="UTF-8">
         <title>Jels</title>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-        <script src="../jels-v.01.js"></script>
+        <script src="jels-v.01.js"></script>
         <script>
         $(document).ready(function(){
             $(".foo").jels("350, 500");
@@ -34,17 +36,19 @@ A complete example:
 
 ## The Syntax
 
-Jels measures the width of the element and if that width is **less than** any of the supplied widths it will add that number as a class, prefixed with `jels-`.
+You first provide the target element and then as many breakpoints as you need.
 
-So, given the following:
+    $("[target-element]").jels("[breakpoint-1], [breakpoint-2], ... ")
+
+For, example:
 
     $(".foo").jels("350, 500");
 
-This element `.foo` will be measured on load and during window resizes.
+This element `.foo` will be measured on load and during window resizes. If at any point `.foo` is...
 
-- If `.foo` is less than or equal to 350px, a `jels-350` class will be applied.
-- If `.foo` is greater than 350px but less than or equal to 500px, a `jels-500` will be applied.
-- If `.foo` is greater than 500px no class will be added.
+- ...less than or equal to 350px, a `jels-350` class will be applied.
+- ...greater than 350px but less than or equal to 500px, a `jels-500` will be applied.
+- ...greater than 500px no class will be added.
 
 This means you can supply custom CSS depending on the width of the element.
 
