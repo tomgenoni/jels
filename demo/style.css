@@ -25,6 +25,7 @@ p {
     float: left;
     width: 50%;
     padding: 20px;
+    -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
 
